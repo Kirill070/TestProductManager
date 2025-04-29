@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ProductRequest extends FormRequest
 {
@@ -27,7 +28,7 @@ class ProductRequest extends FormRequest
             'required',
             'string',
             'regex:/^[a-zA-Z0-9]+$/',
-            \Illuminate\Validation\Rule::unique('products')->ignore($this->route('product')),
+            Rule::unique('products')->ignore($this->route('product')),
             ],
             'status' => 'required|in:available,unavailable',
             'data' => 'nullable|json',
