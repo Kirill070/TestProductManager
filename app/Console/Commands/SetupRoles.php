@@ -33,6 +33,7 @@ class SetupRoles extends Command
             'create products',
             'edit products',
             'delete products',
+            'edit product article',
         ];
 
         foreach ($permissions as $permission) {
@@ -40,10 +41,15 @@ class SetupRoles extends Command
         }
 
         $admin = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
-        $user = Role::firstOrCreate(['name' => 'user', 'guard_name' => 'web']);
+        $user = Role::firstOrCreate(['name' => config('products.role'), 'guard_name' => 'web']);
 
         $admin->syncPermissions($permissions);
-        $user->syncPermissions(['view products']);
+        $user->syncPermissions([
+            'view products',
+            'create products',
+            'edit products',
+            'delete products',
+        ]);
 
         $testUser = User::where('email', 'test@example.com')->first();
         if ($testUser) {

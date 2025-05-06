@@ -12,9 +12,7 @@ class Product extends Model
 
     protected $fillable = ['article', 'name', 'status', 'data'];
 
-    protected $casts = [
-        'data' => 'array',
-    ];
+    protected $casts = [];
 
     public function scopeAvailable($query)
     {

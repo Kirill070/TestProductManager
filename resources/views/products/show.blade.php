@@ -1,11 +1,26 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Продукт #{{ $product->id }}</h1>
-    <p><strong>Артикул:</strong> {{ $product->article }}</p>
-    <p><strong>Название:</strong> {{ $product->name }}</p>
-    <p><strong>Статус:</strong> {{ $product->status }}</p>
-    <p><strong>Данные:</strong> {{ json_encode($product->data) }}</p>
+    <h1>Просмотр продукта</h1>
+
+    <div>
+        <strong>ID:</strong> {{ $product->id }}
+    </div>
+    <div>
+        <strong>Артикул:</strong> {{ $product->article }}
+    </div>
+    <div>
+        <strong>Название:</strong> {{ $product->name }}
+    </div>
+    <div>
+        <strong>Статус:</strong> {{ $product->status }}
+    </div>
+    <div>
+        <strong>Данные:</strong> {!! $product->data ?? '' !!}
+    </div>
+
     <a href="{{ route('products.index') }}" class="btn">Назад</a>
-    <a href="{{ route('products.edit', $product) }}" class="btn">Редактировать</a>
+    @can('edit products')
+        <a href="{{ route('products.edit', $product) }}" class="btn">Редактировать</a>
+    @endcan
 @endsection

@@ -44,6 +44,7 @@ class ProductController extends Controller
 
     public function edit(Product $product): View
     {
+        \Log::info('Product data before edit view', ['data' => $product->data, 'json' => json_encode($product->data, JSON_UNESCAPED_SLASHES)]);
         return view('products.edit', compact('product'));
     }
 

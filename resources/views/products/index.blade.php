@@ -2,7 +2,9 @@
 
 @section('content')
     <h1>Продукты</h1>
-    <a href="{{ route('products.create') }}" class="btn">Добавить продукт</a>
+    @can('create products')
+        <a href="{{ route('products.create') }}" class="btn">Добавить продукт</a>
+    @endcan
     @if ($products->isEmpty())
         <p>Нет продуктов.</p>
     @else
@@ -24,15 +26,20 @@
                         <td>{{ $product->article }}</td>
                         <td>{{ $product->name }}</td>
                         <td>{{ $product->status }}</td>
-                        <td>{{ json_encode($product->data) }}</td>
+                        <td>{!! $product->data ?? '' !!}</td>
                         <td>
-                            <a href="{{ route('products.show', $product) }}">Просмотр</a> |
-                            <a href="{{ route('products.edit', $product) }}">Редактировать</a> |
-                            <form action="{{ route('products.destroy', $product) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger" onclick="return confirm('Удалить продукт?')">Удалить</button>
-                            </form>
+                            <a href="{{ route('products.show', $product) }}">Просмотр</a>
+                            @can('edit products')
+                                | <a href="{{ route('products.edit', $product) }}">Редактировать</a>
+                            @endcan
+                            @can('delete products')
+                                |
+                                <form action="{{ route('products.destroy', $product) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Удалить продукт?')">Удалить</button>
+                                </form>
+                            @endcan
                         </td>
                     </tr>
                 @endforeach
