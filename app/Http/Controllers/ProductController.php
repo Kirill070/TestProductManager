@@ -5,10 +5,20 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Controller;
 use Illuminate\View\View;
 
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:view products')->only(['index', 'show']);
+        $this->middleware('permission:create products')->only(['create', 'store']);
+        $this->middleware('permission:edit products')->only(['edit', 'update']);
+        $this->middleware('permission:delete products')->only('destroy');
+    }
+
     public function index(): View
     {
         $products = Product::all();
