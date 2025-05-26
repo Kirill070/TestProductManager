@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
+use App\Jobs\SendProductCreatedNotificationJob;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
@@ -33,7 +34,10 @@ class ProductController extends Controller
     public function store(ProductRequest $request): RedirectResponse
     {
         $validated = $request->validated();
-        Product::create($validated);
+        $product = Product::create($validated);
+
+        SendProductCreatedNotificationJob::dispatch($product);
+
         return redirect()->route('products.index')->with('success', 'Продукт успешно добавлен');
     }
 
